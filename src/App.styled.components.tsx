@@ -7,7 +7,7 @@ export const EventDescription = styled.p`
 
 export const EventDetailsContainer = styled.div`
   width: 25%;
-  min-width: 210px;
+  min-width: 300px;
 `;
 
 export const Label = styled.p`
