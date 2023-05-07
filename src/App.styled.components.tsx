@@ -7,6 +7,7 @@ export const EventDescription = styled.p`
 
 export const EventDetailsContainer = styled.div`
   width: 25%;
+  min-width: 210px;
 `;
 
 export const Label = styled.p`
@@ -19,6 +20,4 @@ export const EventDtatesSection = styled.div`
   display: flex;
 `;
 
-export const LogOutBtn = styled.button`
-
-`;
+export const LogOutBtn = styled.button``;
