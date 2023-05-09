@@ -5,11 +5,16 @@ import {
   EventDetailsContainer,
   Label,
   EventDtatesSection,
+  LoginContainer,
   LogOutBtn,
+  AppContainer,
+  GoogleBtnContainer,
 } from "./App.styled.components";
 import { EVENT_DETAILS, LABLE_TEXT } from "./constant";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
+
+import "./assets/images/app-background-img.jpg";
 
 function App() {
   const [logedInUser, setLogedInUser] = useState<any>(
@@ -38,31 +43,34 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <AppContainer>
+      <LoginContainer>
         {logedInUser ? (
           <React.Fragment>
             <p>{logedInUser.user}</p>
             <LogOutBtn onClick={handleOnLogOut}>Log Out</LogOutBtn>
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <EventDetailsContainer>
-              <EventDescription>{EVENT_DETAILS}</EventDescription>
-              <EventDtatesSection>
-                <Label>
-                  {`${LABLE_TEXT.eventStartLbl} `}
-                  <strong>23rd Apr 2023 </strong>
-                  {`${LABLE_TEXT.eventEndsLbl} `}
-                  <strong>23rd Apr 2023</strong>
-                </Label>
-              </EventDtatesSection>
-            </EventDetailsContainer>
-            <GoogleLogin onSuccess={handleOnSuccess} onError={handleOnError} />
-          </React.Fragment>
+          <EventDetailsContainer>
+            <EventDescription>{EVENT_DETAILS}</EventDescription>
+            <EventDtatesSection>
+              <Label>
+                {`${LABLE_TEXT.eventStartLbl} `}
+                <strong>23rd Apr 2023 </strong>
+                {`${LABLE_TEXT.eventEndsLbl} `}
+                <strong>23rd Apr 2023</strong>
+              </Label>
+            </EventDtatesSection>
+            <GoogleBtnContainer>
+              <GoogleLogin
+                onSuccess={handleOnSuccess}
+                onError={handleOnError}
+              />
+            </GoogleBtnContainer>
+          </EventDetailsContainer>
         )}
-      </header>
-    </div>
+      </LoginContainer>
+    </AppContainer>
   );
 }
 
