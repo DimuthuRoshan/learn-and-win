@@ -13,6 +13,7 @@ import {
 import { EVENT_DETAILS, LABLE_TEXT } from "./constant";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
+import { isMobile } from "react-device-detect";
 
 import "./assets/images/app-background-img.jpg";
 
@@ -62,10 +63,22 @@ function App() {
               </Label>
             </EventDtatesSection>
             <GoogleBtnContainer>
-              <GoogleLogin
-                onSuccess={handleOnSuccess}
-                onError={handleOnError}
-              />
+              {isMobile ? (
+                <GoogleLogin
+                  onSuccess={handleOnSuccess}
+                  onError={handleOnError}
+                  shape="square"
+                  type="icon"
+                  size="medium"
+                />
+              ) : (
+                <GoogleLogin
+                  onSuccess={handleOnSuccess}
+                  onError={handleOnError}
+                  shape="square"
+                  text="signin"
+                />
+              )}
             </GoogleBtnContainer>
           </EventDetailsContainer>
         )}

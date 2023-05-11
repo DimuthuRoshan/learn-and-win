@@ -10,7 +10,6 @@ export const EventDescription = styled.p`
 `;
 
 export const EventDetailsContainer = styled.div`
-  min-width: 300px;
   text-align: center;
 `;
 
@@ -30,7 +29,6 @@ export const LoginContainer = styled.div`
   justify-content: center;
   margin: 1rem;
   width: 40%;
-  height: 40%;
   background: rgb(255,255,255,0.2);
   border-radius: 10px;
 }
