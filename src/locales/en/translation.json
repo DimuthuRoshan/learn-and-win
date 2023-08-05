@@ -1,0 +1,41 @@
+{
+  "loginPage": {
+    "event": {
+      "label": "This is an open event where students can win book vouchers worth Rs.10000.00 by answering multiple choice questions.",
+      "start": "Start on",
+      "end": "ends on"
+    },
+    "loginButtonLabel": "signin"
+  },
+  "homePage": {
+    "logOutButton": "Log out"
+  },
+  "instructionPage": {
+    "startButton": "Start",
+    "title": "Important points :",
+    "instructionPoint1": "All questions must be answered.",
+    "instructionPoint2": "Each question will have a time limit of 2 minutes.",
+    "instructionPoint3": "Choose the most correct answer to the question.",
+    "instructionPoint4": "Each question can be answered only once.",
+    "instructionPoint5": "Each question carries 1 mark.",
+    "instructionPoint6": "Whoever answers all the questions correctly in the least time wins.",
+    "instructionPoint7": "The winner will be notified by email."
+  },
+  "subjectSelectionPage": {
+    "mathamatics": {
+      "name": "Mathamatics",
+      "description": "Will cover all mathamatics OL lessons",
+      "meta": "GCE Ordinary Level - Mathamatics"
+    },
+    "english": {
+      "name": "English",
+      "description": "Will cover all english mathamatics OL lessons",
+      "meta": "GCE Ordinary Level - English"
+    },
+    "science": {
+      "name": "Science",
+      "description": "Will cover all science mathamatics OL lessons",
+      "meta": "GCE Ordinary Level - Science"
+    }
+  }
+}

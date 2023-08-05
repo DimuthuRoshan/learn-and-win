@@ -1,36 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, SyntheticEvent, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { googleLogout } from "@react-oauth/google";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
+
 import "./App.css";
-import {
-  EventDescription,
-  EventDetailsContainer,
-  Label,
-  EventDtatesSection,
-  LoginContainer,
-  LogOutBtn,
-  AppContainer,
-  GoogleBtnContainer,
-} from "./App.styled.components";
-import { EVENT_DETAILS, LABLE_TEXT } from "./constant";
-import { GoogleLogin, googleLogout } from "@react-oauth/google";
-import jwtDecode from "jwt-decode";
-import { isMobile } from "react-device-detect";
+import Login from "./components/login/Login";
+import { AppContext, ILoggedUser } from "./Utils";
+import AppRoutes from "./components/AppRoutes";
 
 import "./assets/images/app-background-img.jpg";
+import HeaderNavigationBar from "./components/HeaderNavigationBar";
 
-function App() {
-  const [logedInUser, setLogedInUser] = useState<any>(
-    localStorage.getItem("logedInUser")
-      ? JSON.parse(String(localStorage.getItem("logedInUser")))
+const App = () => {
+  const { i18n } = useTranslation();
+
+  const [selectedLang, setSelectedLang] = useState<string>(
+    sessionStorage.getItem("selectedLang")
+      ? String(sessionStorage.getItem("selectedLang"))
+      : "sl"
+  );
+
+  const [logedInUser, setLogedInUser] = useState<ILoggedUser | null>(
+    sessionStorage.getItem("logedInUser")
+      ? JSON.parse(String(sessionStorage.getItem("logedInUser")))
       : null
   );
 
-  console.log("FFFFFFFFFFFF", process.env.REACT_APP_GOOGLE_CLIENT_ID);
-
   const handleOnSuccess = (credentialResponse: any) => {
-    console.log(credentialResponse);
-    console.log(credentialResponse.credential);
-    localStorage.setItem("logedInUser", JSON.stringify(credentialResponse));
-    setLogedInUser(jwtDecode(credentialResponse.credential));
+    sessionStorage.setItem("logedInUser", JSON.stringify(credentialResponse));
+    setLogedInUser(credentialResponse);
   };
 
   const handleOnError = () => {
@@ -38,53 +36,52 @@ function App() {
   };
 
   const handleOnLogOut = () => {
-    localStorage.removeItem("logedInUser");
+    sessionStorage.removeItem("logedInUser");
     googleLogout();
     setLogedInUser(null);
   };
 
-  return (
-    <AppContainer>
-      <LoginContainer>
-        {logedInUser ? (
-          <React.Fragment>
-            <p>{logedInUser.user}</p>
-            <LogOutBtn onClick={handleOnLogOut}>Log Out</LogOutBtn>
-          </React.Fragment>
-        ) : (
-          <EventDetailsContainer>
-            <EventDescription>{EVENT_DETAILS}</EventDescription>
-            <EventDtatesSection>
-              <Label>
-                {`${LABLE_TEXT.eventStartLbl} `}
-                <strong>23rd Apr 2023 </strong>
-                {`${LABLE_TEXT.eventEndsLbl} `}
-                <strong>23rd Apr 2023</strong>
-              </Label>
-            </EventDtatesSection>
-            <GoogleBtnContainer>
-              {isMobile ? (
-                <GoogleLogin
-                  onSuccess={handleOnSuccess}
-                  onError={handleOnError}
-                  shape="square"
-                  type="icon"
-                  size="medium"
-                />
-              ) : (
-                <GoogleLogin
-                  onSuccess={handleOnSuccess}
-                  onError={handleOnError}
-                  shape="square"
-                  text="signin"
-                />
-              )}
-            </GoogleBtnContainer>
-          </EventDetailsContainer>
-        )}
-      </LoginContainer>
-    </AppContainer>
+  const handleLangSelection = async (event: SyntheticEvent, data: any) => {
+    console.log("Event", event);
+    console.log("Data", data.value);
+    await i18n
+      .changeLanguage(data.value)
+      .then(() => {
+        sessionStorage.setItem("selectedLang", data.value);
+      })
+      .catch(() => {
+        console.log("Error in language selection");
+      });
+  };
+
+  const appContextValue = useMemo(
+    () => ({ userCredential: logedInUser, selectedlang: i18n.language }),
+    [selectedLang, logedInUser]
   );
-}
+
+  return (
+    <>
+      {console.log("LLLLLLLLLL", logedInUser)}
+      {console.log("CCCCCCCCC", i18n)}
+      {console.log("appContextValue", appContextValue)}
+      {logedInUser ? (
+        <AppContext.Provider value={appContextValue}>
+          <HeaderNavigationBar
+            onClickLogOut={handleOnLogOut}
+          ></HeaderNavigationBar>
+          <MemoryRouter>
+            <AppRoutes />
+          </MemoryRouter>
+        </AppContext.Provider>
+      ) : (
+        <Login
+          handleLangSelection={handleLangSelection}
+          handleOnSuccess={handleOnSuccess}
+          handleOnError={handleOnError}
+        />
+      )}
+    </>
+  );
+};
 
 export default App;
